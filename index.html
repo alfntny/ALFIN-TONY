@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alfin Tony — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fbf3e7;
+    --bg2:#fff;
+    --ink:#15151f;
+    --pink:#ff5d8f;
+    --blue:#3d7bff;
+    --yellow:#ffcf3f;
+    --green:#36d399;
+    --purple:#9b6bff;
+    --border:3px solid var(--ink);
+    --shadow:6px 6px 0 var(--ink);
+    --shadow-sm:4px 4px 0 var(--ink);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    background-image:radial-gradient(var(--ink) 1px, transparent 1px);
+    background-size:26px 26px;
+    background-position:-10px -10px;
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+  }
+  a{color:inherit;}
+  code, .mono{font-family:'Space Mono', monospace;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 22px;}
+
+  /* marquee ticker */
+  .ticker{
+    background:var(--ink); color:var(--bg); overflow:hidden; white-space:nowrap;
+    border-bottom:var(--border); font-family:'Space Mono',monospace; font-size:13px;
+    letter-spacing:1px;
+  }
+  .ticker .track{display:inline-block; padding:9px 0; animation:scroll 18s linear infinite;}
+  .ticker span{margin:0 22px;}
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  header.nav{
+    position:sticky; top:0; z-index:20; background:var(--bg2);
+    border-bottom:var(--border);
+  }
+  header.nav .wrap{display:flex; align-items:center; justify-content:space-between; height:64px;}
+  .brand{font-weight:700; font-size:18px;}
+  .brand .cursor{display:inline-block; width:9px; height:18px; background:var(--pink); margin-left:2px; animation:blink 1s steps(1) infinite; vertical-align:middle;}
+  @keyframes blink{50%{opacity:0;}}
+  nav.links{display:flex; gap:10px;}
+  nav.links a{
+    font-family:'Space Mono',monospace; font-size:12.5px; text-decoration:none;
+    padding:7px 13px; border:2px solid var(--ink); border-radius:8px; background:var(--bg2);
+    box-shadow:3px 3px 0 var(--ink); transition:transform .1s, box-shadow .1s;
+  }
+  nav.links a:hover{transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink);}
+
+  section{padding:70px 0;}
+  .tag-pill{
+    display:inline-block; font-family:'Space Mono',monospace; font-size:12.5px;
+    background:var(--yellow); border:2px solid var(--ink); border-radius:999px;
+    padding:4px 14px; margin-bottom:16px; transform:rotate(-1.5deg);
+  }
+  h2.section-title{font-size:30px; margin:0 0 8px;}
+  .section-sub{font-size:14.5px; color:#44465a; margin:0 0 34px; max-width:520px;}
+
+  /* hero */
+  .hero{padding:60px 0 50px;}
+  .hero-top{display:flex; align-items:center; gap:22px; flex-wrap:wrap;}
+  .avatar{
+    width:84px; height:84px; border-radius:50%; object-fit:cover; flex-shrink:0;
+    border:var(--border); box-shadow:var(--shadow-sm); background:var(--bg2);
+  }
+  .hero h1{font-size:40px; line-height:1.18; margin:14px 0 20px;}
+  .hero h1 .hl{background:var(--pink); padding:0 8px; box-decoration-break:clone; -webkit-box-decoration-break:clone;}
+  .term{
+    background:#1b1b28; color:#d9ffe6; border:var(--border); border-radius:12px;
+    box-shadow:var(--shadow); max-width:620px; margin-top:10px; overflow:hidden;
+  }
+  .term .bar{display:flex; gap:7px; padding:10px 14px; background:#0f0f18; border-bottom:2px solid var(--ink);}
+  .term .dot{width:11px; height:11px; border-radius:50%;}
+  .term pre{margin:0; padding:20px 20px 24px; font-family:'Space Mono',monospace; font-size:13.5px; line-height:1.7; white-space:pre-wrap;}
+  .term .prompt{color:#8ad7ff;}
+  .term .comment{color:#7a7f94;}
+  .term .caret{display:inline-block; width:8px; height:15px; background:#d9ffe6; vertical-align:middle; animation:blink 1s steps(1) infinite;}
+
+  .btn-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:26px;}
+  .btn{
+    font-family:'Space Mono',monospace; font-weight:700; font-size:13.5px;
+    padding:12px 20px; border:var(--border); border-radius:10px; text-decoration:none;
+    box-shadow:var(--shadow-sm); transition:transform .1s, box-shadow .1s;
+  }
+  .btn:hover{transform:translate(3px,3px); box-shadow:1px 1px 0 var(--ink);}
+  .btn-pink{background:var(--pink);}
+  .btn-blue{background:var(--blue); color:#fff;}
+  .btn-white{background:var(--bg2);}
+
+  /* stats row */
+  .stats-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:14px; margin-top:34px;}
+  .stat-box{
+    background:var(--bg2); border:var(--border); border-radius:10px; box-shadow:var(--shadow-sm);
+    padding:16px; text-align:center;
+  }
+  .stat-box b{display:block; font-size:26px;}
+  .stat-box span{font-family:'Space Mono',monospace; font-size:11px; color:#5a5c70;}
+
+  /* projects */
+  .proj-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:20px;}
+  .proj-card{
+    background:var(--bg2); border:var(--border); border-radius:14px; box-shadow:var(--shadow);
+    padding:22px; display:flex; flex-direction:column; gap:10px; position:relative;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .proj-card:hover{transform:translate(-3px,-3px); box-shadow:9px 9px 0 var(--ink);}
+  .proj-card .num{
+    font-family:'Space Mono',monospace; font-size:12px; font-weight:700;
+    position:absolute; top:-14px; left:16px; background:var(--ink); color:var(--bg);
+    padding:3px 9px; border-radius:6px;
+  }
+  .proj-card.flagship{grid-column:span 2; background:linear-gradient(135deg, #fff7e0, #fff);}
+  @media (max-width:640px){ .proj-card.flagship{grid-column:span 1;} }
+  .proj-card h3{margin:6px 0 0; font-size:17.5px;}
+  .proj-card p{margin:0; font-size:14px; color:#44465a;}
+  .tag-row{display:flex; flex-wrap:wrap; gap:6px;}
+  .tag{
+    font-family:'Space Mono',monospace; font-size:10.5px; padding:3px 9px; border-radius:999px;
+    border:2px solid var(--ink); background:var(--bg);
+  }
+  .metric-row{display:flex; gap:16px; flex-wrap:wrap; margin-top:2px;}
+  .metric b{display:block; font-size:18px;}
+  .metric span{font-family:'Space Mono',monospace; font-size:10.5px; color:#5a5c70;}
+  .proj-links{display:flex; gap:14px; margin-top:auto; padding-top:8px;}
+  .proj-links a{font-family:'Space Mono',monospace; font-size:12.5px; font-weight:700; text-decoration:none; border-bottom:2px solid var(--ink);}
+  .proj-links a.alt{border-bottom-color:var(--blue); color:var(--blue);}
+
+  /* github / leetcode embeds */
+  .embed-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:760px){ .embed-grid{grid-template-columns:1fr;} }
+  .embed-box{
+    background:var(--bg2); border:var(--border); border-radius:14px; box-shadow:var(--shadow);
+    padding:18px; overflow:auto;
+  }
+  .embed-box h4{margin:0 0 12px; font-family:'Space Mono',monospace; font-size:13px;}
+  .embed-box img{width:100%; height:auto; display:block;}
+  .linkout{display:block; text-decoration:none; color:var(--ink); transition:transform .12s ease, box-shadow .12s ease;}
+  .linkout:hover{transform:translate(-3px,-3px); box-shadow:9px 9px 0 var(--ink);}
+  .linkout-big{font-size:28px; font-weight:700; margin:0 0 6px;}
+  .linkout-sub{font-size:13.5px; color:#44465a; margin:0 0 16px;}
+  .linkout-cta{font-family:'Space Mono',monospace; font-size:12.5px; font-weight:700; border-bottom:2px solid var(--ink);}
+
+  /* skills */
+  .skill-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px;}
+  .skill-card{
+    background:var(--bg2); border:var(--border); border-radius:12px; box-shadow:var(--shadow-sm);
+    padding:16px 18px;
+  }
+  .skill-card h4{margin:0 0 7px; font-family:'Space Mono',monospace; font-size:12px; color:var(--pink);}
+  .skill-card p{margin:0; font-size:13.5px; color:#44465a;}
+
+  /* experience */
+  .exp{display:flex; gap:18px; margin-bottom:26px;}
+  .exp .bar{width:5px; border-radius:4px; background:var(--pink); flex-shrink:0;}
+  .exp:nth-child(2) .bar{background:var(--blue);}
+  .exp:nth-child(3) .bar{background:var(--green);}
+  .exp .when{font-family:'Space Mono',monospace; font-size:12px; color:#5a5c70; margin-bottom:2px;}
+  .exp h3{margin:0 0 2px; font-size:16.5px;}
+  .exp .org{font-family:'Space Mono',monospace; font-size:13px; margin:0 0 9px;}
+  .exp ul{margin:0; padding-left:18px; font-size:14px; color:#44465a;}
+  .exp li{margin-bottom:5px;}
+
+  /* achievements as stickers */
+  .sticker-row{display:flex; flex-wrap:wrap; gap:16px;}
+  .sticker{
+    background:var(--bg2); border:var(--border); border-radius:10px; box-shadow:var(--shadow-sm);
+    padding:12px 16px; font-size:13.5px; max-width:260px;
+  }
+  .sticker:nth-child(1){transform:rotate(-2deg);}
+  .sticker:nth-child(2){transform:rotate(1.5deg);}
+  .sticker:nth-child(3){transform:rotate(-1deg);}
+  .sticker:nth-child(4){transform:rotate(2deg);}
+  .sticker:nth-child(5){transform:rotate(-1.5deg);}
+  .sticker:nth-child(6){transform:rotate(1deg);}
+  .sticker b{display:block; margin-bottom:2px;}
+  .sticker span{color:#5a5c70; font-size:12.5px;}
+
+  footer{border-top:var(--border); background:var(--ink); color:var(--bg); padding:56px 0 50px; text-align:center;}
+  footer h2{font-size:32px; margin:0 0 10px;}
+  footer p{font-family:'Space Mono',monospace; font-size:14px; color:#c6c8d8; margin:0 0 28px;}
+  footer .social{display:flex; justify-content:center; gap:14px; flex-wrap:wrap;}
+  footer .social a{
+    font-family:'Space Mono',monospace; font-size:13px; font-weight:700; text-decoration:none;
+    background:var(--bg); color:var(--ink); padding:11px 20px; border-radius:10px;
+    border:2px solid var(--bg); box-shadow:4px 4px 0 var(--pink);
+    transition:transform .1s, box-shadow .1s;
+  }
+  footer .social a:hover{transform:translate(2px,2px); box-shadow:2px 2px 0 var(--pink);}
+  footer .fine{margin-top:30px; font-size:11.5px; color:#8c8ea2;}
+
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* scroll buddy — runs along the edge of the page, built from a real pixel sprite */
+  .buddy{position:fixed; right:14px; top:140px; z-index:30; width:52px; pointer-events:none; transition:top .15s linear;}
+  .buddy img{display:block; width:100%; height:auto; image-rendering:pixelated; image-rendering:crisp-edges; filter:drop-shadow(2px 3px 0 rgba(0,0,0,.25));}
+  .buddy.facing-up img{transform:scaleX(-1);}
+
+
+  .buddy-bubble{
+    position:absolute; right:58px; top:-4px; background:#fff; border:2.5px solid var(--ink);
+    border-radius:10px; padding:5px 11px; font-family:'Space Mono',monospace; font-size:11.5px; font-weight:700;
+    white-space:nowrap; box-shadow:3px 3px 0 var(--ink); opacity:0; transition:opacity .3s ease; pointer-events:none;
+  }
+  .buddy-bubble.show{opacity:1;}
+  .buddy-bubble:after{content:'';position:absolute; right:-7px; top:12px; width:0; height:0; border:5px solid transparent; border-left-color:var(--ink);}
+
+  @media (max-width:900px){ .buddy{display:none;} }
+</style>
+</head>
+<body>
+
+<div class="buddy standing" id="buddy" aria-hidden="true">
+  <div class="buddy-bubble" id="buddyBubble">hello! 👋</div>
+  <img id="buddySprite" src="assets/buddy_stand.png" alt="" />
+</div>
+
+<div class="ticker">
+  <div class="track mono">
+    <span>★ OPEN TO WORK</span><span>★ SOFTWARE ENGINEER</span><span>★ UP FOR ANYTHING</span><span>★ 200+ LEETCODE SOLVED</span><span>★ SRMIST '27</span>
+    <span>★ OPEN TO WORK</span><span>★ SOFTWARE ENGINEER</span><span>★ UP FOR ANYTHING</span><span>★ 200+ LEETCODE SOLVED</span><span>★ SRMIST '27</span>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <div class="brand">alfin.dev<span class="cursor"></span></div>
+    <nav class="links">
+      <a href="#projects">~/projects</a>
+      <a href="#stats">~/stats</a>
+      <a href="#career">~/career</a>
+      <a href="#contact">~/contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <img class="avatar" src="assets/avatar.png" alt="Alfin Tony" />
+      <span class="tag-pill" style="margin-bottom:0;">CSE @ SRMIST · Ernakulam / Chennai</span>
+    </div>
+    <h1>Final-year CS student building<br/><span class="hl">software</span> that ships.</h1>
+
+    <div class="term">
+      <div class="bar">
+        <div class="dot" style="background:#ff5f56;"></div>
+        <div class="dot" style="background:#ffbd2e;"></div>
+        <div class="dot" style="background:#27c93f;"></div>
+      </div>
+      <pre><span class="prompt">alfin@portfolio</span>:~$ whoami
+<span class="comment"># loading profile...</span>
+&gt;&gt;&gt; print("hey, I'm Alfin — I build software,
+...       and I'm way too into LeetCode")
+<span class="prompt">alfin@portfolio</span>:~$ <span class="caret"></span></pre>
+    </div>
+
+    <div class="btn-row">
+      <a class="btn btn-pink" href="#projects">see my projects →</a>
+      <a class="btn btn-blue" href="https://github.com/alfntny" target="_blank" rel="noopener">github ↗</a>
+      <a class="btn btn-white" href="mailto:alfntny@gmail.com">say hi ✉</a>
+    </div>
+
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <span class="tag-pill" style="background:var(--blue); color:#fff;">~/projects</span>
+    <h2 class="section-title reveal">Stuff I've built</h2>
+    <p class="section-sub reveal">A mix of research, systems work, and a couple of shipped products.</p>
+
+    <div class="proj-grid">
+
+      <div class="proj-card flagship reveal">
+        <span class="num">01</span>
+        <h3>SDN Intrusion Detection &amp; Prevention System</h3>
+        <div class="tag-row">
+          <span class="tag">Python</span><span class="tag">LSTM</span><span class="tag">Random Forest</span>
+          <span class="tag">Ryu / OpenFlow</span><span class="tag">InSDN Dataset</span>
+        </div>
+        <p>Built an ML pipeline from scratch — 11 models trained on 343,889 network flows across 8 attack classes — wired into a live Ryu SDN controller for real-time traffic mitigation. Malicious flows get auto-blocked via OpenFlow DROP rules above a confidence threshold.</p>
+        <div class="metric-row">
+          <div class="metric"><b>96%</b><span>ACCURACY</span></div>
+          <div class="metric"><b>0.469ms</b><span>INFERENCE</span></div>
+          <div class="metric"><b>343K+</b><span>FLOWS</span></div>
+        </div>
+        <div class="proj-links"><a href="https://github.com/alfntny/SDN-IDS-IPS" target="_blank" rel="noopener">view repo →</a></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <span class="num">02</span>
+        <h3>Facial Recognition — BPCL</h3>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">OpenCV</span><span class="tag">CV</span></div>
+        <p>Real-time facial recognition for personnel access monitoring, self-initiated during my BPCL Kochi Refinery internship after spotting a gap in the existing RFID process.</p>
+        <div class="proj-links"><a href="https://github.com/alfntny/Access-detection-using-facial-recognition" target="_blank" rel="noopener">view repo →</a></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <span class="num">03</span>
+        <h3>AsherHomes</h3>
+        <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Vercel</span><span class="tag">Live</span></div>
+        <p>A real-estate/builder website — live in production on Vercel, built end-to-end and actually shipped.</p>
+        <div class="proj-links">
+          <a href="https://asherhomesaluva.vercel.app" target="_blank" rel="noopener">live site →</a>
+          <a class="alt" href="https://github.com/alfntny/AsherHomes" target="_blank" rel="noopener">repo</a>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <span class="num">04</span>
+        <h3>Webcam Background Remover</h3>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">OpenCV</span><span class="tag">Matting</span></div>
+        <p>Real-time person segmentation and background replacement from a live webcam feed, with custom uploaded backgrounds.</p>
+        <div class="proj-links"><a href="https://github.com/alfntny/Background-Remover" target="_blank" rel="noopener">view repo →</a></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <span class="num">05</span>
+        <h3>README Generator</h3>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Vercel</span><span class="tag">Live</span></div>
+        <p>Generates a project README from a short prompt or uploaded files, so repos get usable docs in seconds instead of staying blank.</p>
+        <div class="proj-links">
+          <a href="https://readme-generator-pied.vercel.app/" target="_blank" rel="noopener">live site →</a>
+          <a class="alt" href="https://github.com/alfntny/README-generator-" target="_blank" rel="noopener">repo</a>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <span class="num">06</span>
+        <h3>Myocardial Infarction Prediction</h3>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">XGBoost</span></div>
+        <p>Compared Logistic Regression, Random Forest, and XGBoost on clinical data to predict cardiac risk, with SMOTE for class imbalance.</p>
+        <div class="proj-links"><a href="https://github.com/alfntny/Myocardial-Infraction-Prediction-" target="_blank" rel="noopener">view repo →</a></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <span class="num">07</span>
+        <h3>BrainMint — Backend Internship Work</h3>
+        <div class="tag-row"><span class="tag">Java</span><span class="tag">OOP</span><span class="tag">REST APIs</span></div>
+        <p>Modular Java backend components and RESTful APIs built during my backend internship at BrainMint, Chennai.</p>
+        <div class="proj-links"><a href="https://github.com/alfntny/BrainMint" target="_blank" rel="noopener">view repo →</a></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="stats">
+  <div class="wrap">
+    <span class="tag-pill" style="background:var(--green);">~/stats</span>
+    <h2 class="section-title reveal">The receipts</h2>
+    <p class="section-sub reveal">Live GitHub activity and LeetCode grind, pulled straight from the source.</p>
+    <div class="embed-grid">
+      <a class="embed-box reveal linkout" href="https://github.com/alfntny" target="_blank" rel="noopener">
+        <h4>// github</h4>
+        <p class="linkout-big">@alfntny</p>
+        <p class="linkout-sub">7+ public repos · ML, networking &amp; web projects</p>
+        <span class="linkout-cta">open profile →</span>
+      </a>
+      <a class="embed-box reveal linkout" href="https://leetcode.com/u/alfxntxny/" target="_blank" rel="noopener">
+        <h4>// leetcode</h4>
+        <p class="linkout-big">200+ solved</p>
+        <p class="linkout-sub">consistent DSA grind, no signs of stopping</p>
+        <span class="linkout-cta">open profile →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="career">
+  <div class="wrap">
+    <span class="tag-pill" style="background:var(--purple); color:#fff;">~/career</span>
+    <h2 class="section-title reveal">Where I've worked</h2>
+    <p class="section-sub reveal">Internships and leadership roles.</p>
+
+    <div class="exp reveal">
+      <div class="bar"></div>
+      <div>
+        <div class="when">DEC 2025 — JAN 2026</div>
+        <h3>Information Systems Intern</h3>
+        <p class="org mono">BPCL Kochi Refinery</p>
+        <ul>
+          <li>Self-initiated a proof-of-concept real-time facial recognition system in Python/OpenCV for personnel access monitoring, after spotting a gap in the existing RFID-based process.</li>
+          <li>Designed a live video frame-processing and face-detection pipeline, improving detection performance via image preprocessing.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp reveal">
+      <div class="bar"></div>
+      <div>
+        <div class="when">FEB 2025 — JUL 2025</div>
+        <h3>Java &amp; Backend Intern</h3>
+        <p class="org mono">BrainMint, Chennai</p>
+        <ul>
+          <li>Developed modular Java backend components and RESTful APIs following OOP and clean-architecture practices.</li>
+          <li>Integrated backend services with the frontend of a client-facing web application.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp reveal">
+      <div class="bar"></div>
+      <div>
+        <div class="when">FEB 2025 — DEC 2025</div>
+        <h3>Software Configuration Head</h3>
+        <p class="org mono">HyperLoopIn SRM</p>
+        <ul>
+          <li>Led the software side of a student-built hyperloop pod, including an ML model governing pod speed control.</li>
+          <li>Managed a 10–20 member team, building guided task paths to onboard and direct largely junior members.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <span class="tag-pill" style="background:var(--yellow);">~/skills</span>
+    <h2 class="section-title reveal">What I build with</h2>
+    <div class="skill-grid">
+      <div class="skill-card reveal"><h4>// languages</h4><p>Python, Java, C, C++, JavaScript, SQL</p></div>
+      <div class="skill-card reveal"><h4>// machine learning</h4><p>NumPy, Pandas, Scikit-learn, XGBoost, OpenCV</p></div>
+      <div class="skill-card reveal"><h4>// backend &amp; web</h4><p>REST APIs, Flask, HTTP, HTML, CSS</p></div>
+      <div class="skill-card reveal"><h4>// genai &amp; llm</h4><p>Prompt Engineering, Generative AI (Oracle OCI Certified)</p></div>
+      <div class="skill-card reveal"><h4>// core cs</h4><p>Data Structures &amp; Algorithms, OOP, DBMS, Operating Systems</p></div>
+      <div class="skill-card reveal"><h4>// tools</h4><p>Git, GitHub, Jupyter Notebook</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="tag-pill" style="background:var(--pink);">~/achievements</span>
+    <h2 class="section-title reveal">Flex corner</h2>
+    <div class="sticker-row">
+      <div class="sticker reveal"><b>🏆 Runners-up</b><span>Quantathon 3.0, SRMIST</span></div>
+      <div class="sticker reveal"><b>🥇 Best Project</b><span>TechNow 2023</span></div>
+      <div class="sticker reveal"><b>⚡ 200+ LeetCode</b><span>and counting</span></div>
+      <div class="sticker reveal"><b>☁️ OCI Certified</b><span>Generative AI Professional, 2025</span></div>
+      <div class="sticker reveal"><b>📜 NPTEL</b><span>Programming in Java</span></div>
+      <div class="sticker reveal"><b>📜 NPTEL</b><span>Intro to Machine Learning</span></div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <h2>Open to work ✦</h2>
+    <p>hit me up, I'm down for pretty much anything interesting</p>
+    <div class="social">
+      <a href="mailto:alfntny@gmail.com">✉ alfntny@gmail.com</a>
+      <a href="https://linkedin.com/in/alfin-tony" target="_blank" rel="noopener">in/ linkedin</a>
+      <a href="https://github.com/alfntny" target="_blank" rel="noopener">⌘ github</a>
+    </div>
+    <p class="fine">Alfin Tony · Ernakulam, Kerala / Chennai</p>
+  </div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  els.forEach(el=>io.observe(el));
+
+  const SPRITE_GREET = "assets/buddy_greet.png";
+  const SPRITE_STAND = "assets/buddy_stand.png";
+  const SPRITE_RUN1 = "assets/buddy_run1.png";
+  const SPRITE_RUN2 = "assets/buddy_run2.png";
+
+  const buddy = document.getElementById('buddy');
+  const buddyBubble = document.getElementById('buddyBubble');
+  const buddySprite = document.getElementById('buddySprite');
+  let lastScrollTop = window.scrollY || 0;
+  let stopTimer = null;
+  let pose = 'greet'; // 'greet' | 'stand' | 'run'
+
+  function setPose(p){
+    if(pose === p) return;
+    pose = p;
+    if(p === 'run'){
+      buddySprite.src = SPRITE_RUN1;
+    } else {
+      buddySprite.src = (p === 'greet') ? SPRITE_GREET : SPRITE_STAND;
+    }
+  }
+
+  function updateBuddy(){
+    const doc = document.documentElement;
+    const scrollTop = window.scrollY || doc.scrollTop;
+    const maxScroll = (doc.scrollHeight - window.innerHeight) || 1;
+    const frac = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
+    const topMin = 110, topMax = window.innerHeight - 150;
+    buddy.style.top = (topMin + frac * (topMax - topMin)) + 'px';
+
+    const goingUp = scrollTop < lastScrollTop;
+    buddy.classList.toggle('facing-up', goingUp);
+    lastScrollTop = scrollTop;
+
+    clearTimeout(stopTimer);
+
+    if(frac <= 0.015){
+      setPose('greet');
+      buddyBubble.textContent = "hello! 👋"; buddyBubble.classList.add('show');
+    } else if(frac >= 0.985){
+      setPose('greet');
+      buddyBubble.textContent = "bye! 👋"; buddyBubble.classList.add('show');
+    } else {
+      setPose('run');
+      buddyBubble.classList.remove('show');
+      stopTimer = setTimeout(()=>{ setPose('stand'); }, 220);
+    }
+  }
+  window.addEventListener('scroll', updateBuddy, {passive:true});
+  window.addEventListener('resize', updateBuddy);
+  updateBuddy();
+</script>
+
+</body>
+</html>
