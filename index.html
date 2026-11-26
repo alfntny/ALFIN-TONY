@@ -165,7 +165,12 @@
   .skill-card p{margin:0; font-size:13.5px; color:#44465a;}
 
   /* experience */
-  .exp{display:flex; gap:18px; margin-bottom:26px;}
+  .exp{
+    display:flex; gap:18px; margin-bottom:20px;
+    background:var(--bg2); border:var(--border); border-radius:14px; box-shadow:var(--shadow);
+    padding:20px 22px; transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .exp:hover{transform:translate(-3px,-3px); box-shadow:9px 9px 0 var(--ink);}
   .exp .bar{width:5px; border-radius:4px; background:var(--pink); flex-shrink:0;}
   .exp:nth-child(2) .bar{background:var(--blue);}
   .exp:nth-child(3) .bar{background:var(--green);}
@@ -260,7 +265,7 @@
 
     .skill-card{padding:13px 14px;}
 
-    .exp{gap:12px;}
+    .exp{gap:12px; padding:15px 16px;}
 
     .sticker{max-width:100%; flex:1 1 calc(50% - 8px);}
     .sticker-row{gap:10px;}
