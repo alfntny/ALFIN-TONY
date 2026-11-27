@@ -227,6 +227,37 @@
 
   @media (max-width:900px){ .buddy{display:none;} }
 
+  /* intro splash */
+  #introScreen{
+    position:fixed; inset:0; z-index:200; background:var(--bg);
+    background-image:radial-gradient(var(--ink) 1px, transparent 1px);
+    background-size:26px 26px; background-position:-10px -10px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    transition:transform .6s cubic-bezier(.6,0,.3,1), opacity .6s ease;
+  }
+  #introScreen.leaving{transform:translateY(-100%); opacity:0; pointer-events:none;}
+  #introSprite{
+    width:140px; image-rendering:pixelated; image-rendering:crisp-edges;
+    filter:drop-shadow(3px 5px 0 rgba(0,0,0,.25));
+    animation:introWave 1.1s ease-in-out infinite;
+    transform-origin:bottom center;
+  }
+  @keyframes introWave{
+    0%,100%{transform:rotate(-4deg) translateY(0);}
+    50%{transform:rotate(4deg) translateY(-6px);}
+  }
+  #introText{
+    font-family:'Space Mono',monospace; font-size:13px; margin-top:22px; color:var(--ink);
+    background:#fff; border:2.5px solid var(--ink); border-radius:10px; padding:8px 16px;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  #introHint{
+    position:absolute; bottom:34px; font-family:'Space Mono',monospace; font-size:11.5px;
+    color:#5a5c70; animation:introBob 1.4s ease-in-out infinite;
+  }
+  @keyframes introBob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);} }
+  @media (max-width:640px){ #introSprite{width:110px;} }
+
   /* mobile */
   @media (max-width:640px){
     .wrap{padding:0 16px;}
@@ -278,6 +309,12 @@
 </style>
 </head>
 <body>
+
+<div id="introScreen">
+  <img id="introSprite" src="assets/buddy_greet.png" alt="" />
+  <div id="introText">hey, I'm Alfin 👋</div>
+  <div id="introHint">scroll to enter ↓</div>
+</div>
 
 <div class="buddy standing" id="buddy" aria-hidden="true">
   <div class="buddy-bubble" id="buddyBubble">hello! 👋</div>
@@ -424,7 +461,7 @@
       <a class="embed-box reveal linkout" href="https://github.com/alfntny" target="_blank" rel="noopener">
         <h4>// github</h4>
         <p class="linkout-big">@alfntny</p>
-        <p class="linkout-sub">10+ public repos · ML, networking &amp; web projects</p>
+        <p class="linkout-sub">7+ public repos · ML, networking &amp; web projects</p>
         <span class="linkout-cta">open profile →</span>
       </a>
       <a class="embed-box reveal linkout" href="https://leetcode.com/u/alfxntxny/" target="_blank" rel="noopener">
@@ -526,6 +563,33 @@
 </footer>
 
 <script>
+  (function(){
+    const intro = document.getElementById('introScreen');
+    if(!intro) return;
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    let left = false;
+    function leaveIntro(){
+      if(left) return;
+      left = true;
+      intro.classList.add('leaving');
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      setTimeout(()=>{ intro.style.display='none'; }, 650);
+      window.removeEventListener('wheel', leaveIntro);
+      window.removeEventListener('touchmove', leaveIntro);
+      window.removeEventListener('keydown', onKey);
+      intro.removeEventListener('click', leaveIntro);
+    }
+    function onKey(e){
+      if(['ArrowDown','PageDown',' '].includes(e.key)) leaveIntro();
+    }
+    window.addEventListener('wheel', leaveIntro, {passive:true});
+    window.addEventListener('touchmove', leaveIntro, {passive:true});
+    window.addEventListener('keydown', onKey);
+    intro.addEventListener('click', leaveIntro);
+  })();
+
   const els = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
